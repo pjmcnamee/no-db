@@ -1,19 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Item from "./Item";
-import SearchButton from "./SearchButton";
-import CompareButton from "./CompareButton";
-import SelectFilter from "./SelectFilter";
-import FilterItems from "./FilterItems";
 import LoadingWrapper from "./LoadingWrapper";
 import "../App.css";
+import Header from "./Header";
+import ItemDisplaySelector from "./ItemDisplaySelector";
 
 export class DisplayItems extends Component {
   constructor() {
     super();
     this.state = {
       items: [],
-      compareItems: [],
       filteredItems: [],
       showCompare: false,
       loading: true,
@@ -49,32 +45,10 @@ export class DisplayItems extends Component {
     });
   };
 
-  addToCompare = item => {
-    axios
-      .post("/api/compare", item)
-      .then(res => {
-        this.setState({
-          compareItems: [...this.state.compareItems, item]
-        });
-      })
-      .catch(err => console.log("Adding to compare failed ", err));
-  };
-
   handleTypeChange = itemType => {
     this.setState({
       type: itemType
     });
-  };
-
-  deleteCompare = id => {
-    axios
-      .delete(`/api/compare/${id}`)
-      .then(res => {
-        this.setState({
-          compareItems: res.data
-        });
-      })
-      .catch(err => console.log("error in deleting item ", err));
   };
 
   filterItems = e => {
@@ -85,8 +59,6 @@ export class DisplayItems extends Component {
         filterType = this.state.typeObjectValues[key];
       }
     }
-
-    console.log(filterType);
     if (this.state.type === "any") {
       this.setState({
         filterItems: []
@@ -97,7 +69,6 @@ export class DisplayItems extends Component {
           return item.category[filterType][0] === this.state.type;
         }
       });
-      console.log(filteredItemsTemp);
       this.setState({
         filteredItems: filteredItemsTemp
       });
@@ -108,8 +79,6 @@ export class DisplayItems extends Component {
     axios
       .get("/getAPIResponse")
       .then(res => {
-        console.log(res.data);
-        console.log(res.data.stashes);
         let holder = [];
         res.data.stashes.forEach(item => {
           if (item.public === true) {
@@ -129,46 +98,22 @@ export class DisplayItems extends Component {
   render() {
     return (
       <div className="App">
-        <div className="container">
-          <div className="nav-container top-fixed">
-            {this.state.showCompare ? (
-              <SearchButton compare={this.compareItemsFlag} />
-            ) : (
-              <CompareButton compare={this.compareItemsFlag} />
-            )}
-          </div>
-          <div className="filter-container top-fixed">
-            {this.state.showCompare ? null : (
-              <SelectFilter
-                filterItems={this.filterItems}
-                handleTypeChange={this.handleTypeChange}
-              />
-            )}
-          </div>
-          <LoadingWrapper loading={this.state.loading}>
-            <div className="items-holder">
-              {this.state.showCompare ? (
-                this.state.compareItems.map(item => {
-                  return (
-                    <Item
-                      item={item}
-                      deleteCompare={this.deleteCompare}
-                      showCompare={this.state.showCompare}
-                      compare={this.addToCompare}
-                    />
-                  );
-                })
-              ) : (
-                <FilterItems
-                  showCompare={this.state.showCompare}
-                  addToCompare={this.addToCompare}
-                  items={this.state.items}
-                  filteredItems={this.state.filteredItems}
-                />
-              )}
-            </div>
-          </LoadingWrapper>
-        </div>
+        <header>
+          <Header
+            showCompare={this.state.showCompare}
+            compareItemsFlag={this.compareItemsFlag}
+            handleTypeChange={this.handleTypeChange}
+            filterItems={this.filterItems}
+          />
+        </header>
+        <LoadingWrapper loading={this.state.loading}>
+          <ItemDisplaySelector
+            filteredItems={this.state.filteredItems}
+            filterItems={this.filterItems}
+            showCompare={this.state.showCompare}
+            items={this.state.items}
+          />
+        </LoadingWrapper>
       </div>
     );
   }

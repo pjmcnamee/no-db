@@ -1,7 +1,6 @@
 const express = require("express");
 const itemController = require("./controllers/items");
 const compareController = require("./controllers/compareItem");
-// const createController = require('./controllers/createdItems')
 
 const app = express();
 const PORT = 3333;
@@ -15,8 +14,6 @@ app.get('/getAPIResponse', (req,res) => {
 		res.json(response)
 	}).catch(error => console.log('error in api call ', error))
 })
-//createdItems ---- moving to stretch goal
-// app.post('/api/create', createController.create)
 
 
 //Compare

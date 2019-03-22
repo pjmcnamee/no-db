@@ -106,6 +106,7 @@ export class DisplayItems extends Component {
             filterItems={this.filterItems}
           />
         </header>
+        <main>
         <LoadingWrapper loading={this.state.loading}>
           <ItemDisplaySelector
             filteredItems={this.state.filteredItems}
@@ -114,6 +115,7 @@ export class DisplayItems extends Component {
             items={this.state.items}
           />
         </LoadingWrapper>
+        </main>
       </div>
     );
   }

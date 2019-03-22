@@ -4,7 +4,7 @@ export default function SelectFilter(props) {
   return (
 	<div>
 	  <form>
-			<select name="" id="" onChange={(e) => props.handleTypeChange(e.target.value)}>
+			<select name="" id="" className="select" onChange={(e) => props.handleTypeChange(e.target.value)}>
 			<option value="any">Any</option>
 			<option value="bow">Bow</option>
 			<option value="claw">Claw</option>

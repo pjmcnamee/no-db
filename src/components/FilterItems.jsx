@@ -9,7 +9,7 @@ export class filter extends Component {
   render() {
     return (
       <div className="items-holder">
-        {this.props.filteredItems.length > 0
+        {this.props.filteredItems.length >= 1
           ? this.props.filteredItems.map(item => {
               return (
                 <Item

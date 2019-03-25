@@ -344,3 +344,7 @@ main {
     transform: rotate(360deg);
   }
 }
+
+.switch {
+  background: red;
+}

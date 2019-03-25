@@ -1,43 +1,85 @@
-import React from 'react'
+import React, { Component } from "react";
 
-export default function Item(props) {
-  return (
-      <div className="items" key={props.item.id}>
-        <h3>
-          {props.item.name
-            ? `${props.item.name} ${props.item.typeLine}`
-            : props.item.typeLine}
-        </h3>
-        <img src={props.item.icon} alt="" />
+export class Item extends Component {
+  constructor() {
+    super();
+    this.state = {
+      classFlag: true,
+      className: "items normal"
+    };
+  }
+
+  handleClassFlag = bool => {
+    this.setState({
+      classFlag: bool
+    });
+  };
+
+  changeBasedOnKey = (key, bool) => {
+    let { id } = this.props.item;
+    let classFlagHolder = "items normal";
+
+    this.handleClassFlag(bool);
+
+    if (this.state.classFlag === false) {
+      if (id === key) {
+        this.setState({
+          className: "items switch"
+        });
+      }
+    }
+
+    this.setState({
+      classFlag: classFlagHolder
+    });
+  };
+
+  render() {
+    let {
+      id,
+      typeLine,
+      icon,
+      explicitMods,
+      ilvl,
+      implicitMods,
+      name
+    } = this.props.item;
+    return (
+      <div className={this.state.className} key={id}>
+        <h3>{name ? `${name} ${typeLine}` : typeLine}</h3>
+        <img src={icon} alt="" />
         <h5>Implicit Mods:</h5>
-        {props.item.implicitMods
-          ? props.item.implicitMods.map(mod => {
+        {implicitMods
+          ? implicitMods.map(mod => {
               return <p>{mod}</p>;
             })
           : null}
         <h5>Explicit Mods:</h5>
-        {props.item.explicitMods
-          ? props.item.explicitMods.map(mod => {
+        {explicitMods
+          ? explicitMods.map(mod => {
               return <p>{mod}</p>;
             })
           : null}
-        <p>ilvl: {props.item.ilvl}</p>
-        {props.showCompare ? null : (
+        <p>ilvl: {ilvl}</p>
+        {this.props.showCompare ? null : (
           <button
             className="compare-button"
-            onClick={() => props.compare(props.item)}
+            onClick={() => this.props.compare(this.props.item, false)}
           >
             Add to Compare
           </button>
         )}
-        {props.showCompare ? (
+        {this.props.showCompare ? (
           <button
             className="delete-button"
-            onClick={() => props.deleteCompare(props.item.id)}
+            onClick={() => this.props.deleteCompare(this.props.item.id)}
           >
             Delete Item
           </button>
         ) : null}
       </div>
-  )
+    );
+  }
 }
+
+export default Item;

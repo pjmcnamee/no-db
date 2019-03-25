@@ -2,7 +2,6 @@ import React from 'react'
 import SearchButton from "./SearchButton";
 import CompareButton from "./CompareButton";
 import SelectFilter from "./SelectFilter";
-import gif from './img/giphy.gif'
 
 export default function Header(props) {
   return (

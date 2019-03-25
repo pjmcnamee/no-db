@@ -14,6 +14,7 @@ export class DisplayItems extends Component {
       showCompare: false,
       loading: true,
       type: "any",
+      class: true,
       typeObjectValues: {
         amulet: "accessories",
         helmet: "armour",
@@ -37,6 +38,12 @@ export class DisplayItems extends Component {
         chest: "armour"
       }
     };
+  }
+
+  handleCompareSwitch = bool => {
+    this.setState({
+      class : bool
+    })
   }
 
   compareItemsFlag = bool => {
@@ -109,6 +116,8 @@ export class DisplayItems extends Component {
         <main>
         <LoadingWrapper loading={this.state.loading}>
           <ItemDisplaySelector
+            handleCompareSwitch={this.handleCompareSwitch}
+            class={this.state.class}
             filteredItems={this.state.filteredItems}
             filterItems={this.filterItems}
             showCompare={this.state.showCompare}

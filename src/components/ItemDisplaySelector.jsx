@@ -11,10 +11,11 @@ export class ItemDisplaySelector extends Component {
     };
   }
 
-  addToCompare = item => {
+  addToCompare = (item, bool) => {
     axios
       .post("/api/compare", item)
       .then(res => {
+        this.props.handleCompareSwitch(bool);
         this.setState({
           compareItems: [...res.data]
         });
@@ -41,6 +42,7 @@ export class ItemDisplaySelector extends Component {
             return (
               <Item
                 item={item}
+                class={this.props.class}
                 deleteCompare={this.deleteCompare}
                 showCompare={this.props.showCompare}
                 compare={this.addToCompare}
@@ -49,6 +51,7 @@ export class ItemDisplaySelector extends Component {
           })
         ) : (
           <FilterItems
+            class={this.props.class}
             showCompare={this.props.showCompare}
             addToCompare={this.addToCompare}
             items={this.props.items}
